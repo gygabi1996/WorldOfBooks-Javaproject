@@ -5,6 +5,7 @@ import main.java.entity.ListingStatus;
 import main.java.entity.Location;
 import main.java.entity.Marketplace;
 import main.java.entity.list.EntityList;
+import main.java.error.InvalidListingLogger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -70,18 +71,8 @@ public class Main {
             e.printStackTrace();
         }
         entityList.listingList = ListingApiHandler.stringToListingList(listingSting,entityList);
-
-        /*
-        for (Location location:entityList.locationList) {
-            System.out.println(location.getManager_name());
-        }
-*/
-
-        entityList.listingList.forEach((k, v) -> {
-            v.forEach((k2,v2) -> {
-                System.out.println(k2 + " : " + v2);
-            });
-        });
+        
+        InvalidListingLogger.saveInvalidListingsToCSV(entityList);
 
 
 
