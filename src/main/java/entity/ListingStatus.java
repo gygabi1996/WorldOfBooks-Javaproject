@@ -2,18 +2,29 @@ package main.java.entity;
 
 public class ListingStatus {
     private Integer id;
-    private String status_name;
+    private String statusName;
 
-    public ListingStatus(Integer id, String status_name) {
+    public ListingStatus() {
+    }
+
+    public ListingStatus(Integer id, String statusName) {
         this.id = id;
-        this.status_name = status_name;
+        this.statusName = statusName;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public String getStatus_name() {
-        return status_name;
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }

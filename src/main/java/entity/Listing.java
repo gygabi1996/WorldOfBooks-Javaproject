@@ -8,15 +8,15 @@ public class Listing {
     private String title;
     private String description;
     private UUID inventory_item_location_id;
-    private double listing_price;
+    private Double listing_price;
     private String currency;
-    private int quantity;
+    private Integer quantity;
     private ListingStatus listing_status;
     private Marketplace marketplace;
     private Date upload_time;
     private String owner_email_address;
 
-    public Listing(UUID id, String title, String description, UUID inventory_item_location_id, double listing_price, String currency, int quantity, ListingStatus listing_status, Marketplace marketplace, Date upload_time, String owner_email_address) {
+    public Listing(UUID id, String title, String description, UUID inventory_item_location_id, Double listing_price, String currency, Integer quantity, ListingStatus listing_status, Marketplace marketplace, Date upload_time, String owner_email_address) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -46,7 +46,7 @@ public class Listing {
         return inventory_item_location_id;
     }
 
-    public double getListing_price() {
+    public Double getListing_price() {
         return listing_price;
     }
 
@@ -54,7 +54,7 @@ public class Listing {
         return currency;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 

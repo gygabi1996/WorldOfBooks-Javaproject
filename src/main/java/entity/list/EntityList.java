@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class EntityList {
-    public Map<Listing,Boolean> listingList = new HashMap<>();
+    public Map<Listing,Map<String,Boolean>> listingList = new HashMap<>();
     public Set<Location> locationList = new HashSet<>();
     public Set<ListingStatus> listingStatuseList = new HashSet<>();
     public Set<Marketplace> marketplaceList = new HashSet<>();
