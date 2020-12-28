@@ -1,6 +1,7 @@
 package main.java.run;
 
 import main.java.api.*;
+import main.java.dao.DbHandler;
 import main.java.entity.ListingStatus;
 import main.java.entity.Location;
 import main.java.entity.Marketplace;
@@ -71,10 +72,9 @@ public class Main {
             e.printStackTrace();
         }
         entityList.listingList = ListingApiHandler.stringToListingList(listingSting,entityList);
-        
-        InvalidListingLogger.saveInvalidListingsToCSV(entityList);
 
+        //InvalidListingLogger.saveInvalidListingsToCSV(entityList);
 
-
+        DbHandler.saveEntitiesToDatabase(entityList);
     }
 }

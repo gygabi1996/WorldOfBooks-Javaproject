@@ -17,7 +17,7 @@ CREATE TABLE listings (
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     inventory_item_location_id VARCHAR(36),
-    listing_price DECIMAL UNSIGNED NOT NULL,
+    listing_price DOUBLE UNSIGNED NOT NULL,
     currency VARCHAR(3) NOT NULL,
     quantity INT UNSIGNED NOT NULL,
     listing_status_id INT UNSIGNED NOT NULL,
