@@ -4,6 +4,12 @@ CREATE DATABASE worldofbooks;
 
 USE worldofbooks;
 
+# Create user
+
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
+
+GRANT ALL PRIVILEGES ON worldofbooks.* TO 'admin'@'localhost';
+
 # Create the tables
 
 CREATE TABLE listings (
