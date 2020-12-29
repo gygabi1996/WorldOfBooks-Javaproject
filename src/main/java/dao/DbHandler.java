@@ -3,11 +3,14 @@ package main.java.dao;
 import main.java.entity.list.EntityList;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 public class DbHandler {
 
@@ -26,17 +29,9 @@ public class DbHandler {
 
     public static void saveEntitiesToDatabase(EntityList entityList){
         try {
-            properties = new Properties();
-            properties.load(new FileInputStream("src/main/resources/config/dbconfig.properties"));
+            createConnection();
 
-            Class.forName(properties.getProperty(DB_DRIVER_CLASS));
-
-            // Setup the connection with the DB
-            connection = DriverManager.getConnection
-                    (properties.getProperty(DB_URL)
-                    ,properties.getProperty(DB_USERNAME)
-                    ,properties.getProperty(DB_PASSWORD));
-
+            /*
             //Insert Locations
             locationDao = new LocationDaoImpl();
 
@@ -70,8 +65,6 @@ public class DbHandler {
                 }
             });
 
-
-
             //Insert Listings
             listingDao = new ListingDaoImpl();
 
@@ -93,20 +86,81 @@ public class DbHandler {
                 }
             });
 
-            connection.close();
-
-            /*
-            // Statements allow to issue SQL queries to the database
-            statement = connection.createStatement();
-            // Result set get the result of the SQL query
-            resultSet = statement
-                    .executeQuery("select * from feedback.comments");
-            writeResultSet(resultSet);
 
              */
+
+            connection.close();
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private static void createConnection() throws IOException, ClassNotFoundException, SQLException {
+        properties = new Properties();
+        properties.load(new FileInputStream("src/main/resources/config/dbconfig.properties"));
+
+        Class.forName(properties.getProperty(DB_DRIVER_CLASS));
+
+        // Setup the connection with the DB
+        connection = DriverManager.getConnection
+                (properties.getProperty(DB_URL)
+                ,properties.getProperty(DB_USERNAME)
+                ,properties.getProperty(DB_PASSWORD));
+    }
+
+    public static void getReportDatasFromDatabase() throws SQLException, IOException, ClassNotFoundException {
+        createConnection();
+
+        Integer totalListingCount = ReportDao.getTotalListingCount(connection);
+        System.out.println(totalListingCount);
+
+        Map<String,Integer> ebayMap = ReportDao.getEbayListings(connection);
+
+        ebayMap.forEach((k,v) -> {
+            System.out.println(k + v);
+        });
+
+        Map<String,Integer> amazonMap = ReportDao.getAmazonListings(connection);
+
+        amazonMap.forEach((k,v) -> {
+            System.out.println(k + v);
+        });
+
+        String bestLister = ReportDao.getBestLister(connection);
+
+        System.out.println(bestLister);
+
+        System.out.println("############################### ebay ############################");
+
+        Map<String,Map<String,Integer>> ebayMonthlyEbay = ReportDao.getEbayListingsPerMonth(connection);
+
+        ebayMonthlyEbay.forEach((date,month) -> {
+            System.out.println("month:");
+            month.forEach((k,v) -> {
+                System.out.println(k + ":" + v);
+            });
+            System.out.println();
+        });
+
+        System.out.println("############################### Amazon ############################");
+
+        Map<String,Map<String,Integer>> amazonMonthlyEbay = ReportDao.getAmazonListingsPerMonth(connection);
+
+        amazonMonthlyEbay.forEach((date,month) -> {
+            System.out.println("date:" + date);
+            month.forEach((k,v) -> {
+                System.out.println(k + ":" + v);
+            });
+            System.out.println();
+        });
+
+        Map<String,String> bestListerMonthly = ReportDao.getBestListerPerMonth(connection);
+
+        bestListerMonthly.forEach((date,seller) ->{
+            System.out.println(date + ":" + seller);
+        });
+
+        connection.close();
     }
 }
