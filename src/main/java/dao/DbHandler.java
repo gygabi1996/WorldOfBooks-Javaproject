@@ -1,16 +1,15 @@
 package main.java.dao;
 
+import main.java.entity.ReportEntity;
 import main.java.entity.list.EntityList;
+import main.java.report.ReportHandler;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 public class DbHandler {
 
@@ -109,58 +108,41 @@ public class DbHandler {
                 ,properties.getProperty(DB_PASSWORD));
     }
 
-    public static void getReportDatasFromDatabase() throws SQLException, IOException, ClassNotFoundException {
+    public static ReportEntity getReportDatasFromDatabase() throws SQLException, IOException, ClassNotFoundException {
         createConnection();
 
+        // Get datas from database
         Integer totalListingCount = ReportDao.getTotalListingCount(connection);
-        System.out.println(totalListingCount);
-
         Map<String,Integer> ebayMap = ReportDao.getEbayListings(connection);
-
-        ebayMap.forEach((k,v) -> {
-            System.out.println(k + v);
-        });
-
         Map<String,Integer> amazonMap = ReportDao.getAmazonListings(connection);
-
-        amazonMap.forEach((k,v) -> {
-            System.out.println(k + v);
-        });
-
         String bestLister = ReportDao.getBestLister(connection);
-
-        System.out.println(bestLister);
-
-        System.out.println("############################### ebay ############################");
-
         Map<String,Map<String,Integer>> ebayMonthlyEbay = ReportDao.getEbayListingsPerMonth(connection);
-
-        ebayMonthlyEbay.forEach((date,month) -> {
-            System.out.println("month:");
-            month.forEach((k,v) -> {
-                System.out.println(k + ":" + v);
-            });
-            System.out.println();
-        });
-
-        System.out.println("############################### Amazon ############################");
-
         Map<String,Map<String,Integer>> amazonMonthlyEbay = ReportDao.getAmazonListingsPerMonth(connection);
-
-        amazonMonthlyEbay.forEach((date,month) -> {
-            System.out.println("date:" + date);
-            month.forEach((k,v) -> {
-                System.out.println(k + ":" + v);
-            });
-            System.out.println();
-        });
-
         Map<String,String> bestListerMonthly = ReportDao.getBestListerPerMonth(connection);
 
-        bestListerMonthly.forEach((date,seller) ->{
-            System.out.println(date + ":" + seller);
+        connection.close();
+
+        // Convert monthly datas to ReportEntity
+        Map<String,Map<String,Object>> montlyList = new LinkedHashMap<>();
+        bestListerMonthly.forEach((date,lister) -> {
+            Map<String,Object> month = new LinkedHashMap<>();
+            month.put("total_ebay_listing_count",ebayMonthlyEbay.get(date).get("listingCount"));
+            month.put("total_ebay_listing_price",ebayMonthlyEbay.get(date).get("listingPriceSum"));
+            month.put("average_ebay_listing_price",ebayMonthlyEbay.get(date).get("listingPriceAvg"));
+            month.put("total_amazon_listing_count",amazonMonthlyEbay.get(date).get("listingCount"));
+            month.put("total_amazon_listing_price",amazonMonthlyEbay.get(date).get("listingPriceSum"));
+            month.put("average_amazon_listing_price",amazonMonthlyEbay.get(date).get("listingPriceAvg"));
+            month.put("best_lister_email_address",lister);
+            montlyList.put(date,month);
         });
 
-        connection.close();
+        // Create reportEntity
+        ReportEntity reportEntity = new ReportEntity
+            (totalListingCount,
+            ebayMap.get("listingCount"), ebayMap.get("listingPriceSum"), ebayMap.get("listingPriceAvg"),
+            amazonMap.get("listingCount"), amazonMap.get("listingPriceSum"), amazonMap.get("listingPriceAvg"),
+            bestLister,montlyList);
+
+        return reportEntity;
     }
 }
