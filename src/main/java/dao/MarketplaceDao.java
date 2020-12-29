@@ -8,6 +8,5 @@ import java.sql.SQLException;
 import java.util.Set;
 
 public interface MarketplaceDao {
-    public Set<Marketplace> getAllMarketplace();
-    public void insertMarketplace(Marketplace marketplace, Connection connection) throws SQLException;
+    public void insertMarketplaces(Set<Marketplace> marketplaces, Connection connection) throws SQLException;
 }

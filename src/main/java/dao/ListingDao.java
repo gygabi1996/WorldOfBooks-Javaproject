@@ -7,6 +7,5 @@ import java.sql.SQLException;
 import java.util.Set;
 
 public interface ListingDao {
-    public Set<Listing> getAllListings();
-    public void insertListing(Listing listing, Connection connection) throws SQLException;
+    public void insertListings(Set<Listing> listings, Connection connection) throws SQLException;
 }

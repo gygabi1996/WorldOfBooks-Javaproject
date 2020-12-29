@@ -7,6 +7,5 @@ import java.sql.SQLException;
 import java.util.Set;
 
 public interface LocationDao {
-    public Set<Location> getAllLocations();
-    public void insertLocation(Location location, Connection connection) throws SQLException;
+    public void insertLocations(Set<Location> locations, Connection connection) throws SQLException;
 }
