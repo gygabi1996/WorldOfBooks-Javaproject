@@ -1,0 +1,2 @@
+This is invalid listing's folder.
+importLog.csv hold every invalid listing.
