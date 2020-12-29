@@ -128,7 +128,7 @@ public class ListingApiHandler {
 
             // Listing's listing_status
             ListingStatus listingStatus = new ListingStatus();
-            Integer listingStatusId;
+            Integer listingStatusId = null;
             if (!jsonO.isNull("listing_status")) {
                 listingStatusId = jsonO.getInt("listing_status");
 
