@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,7 +17,8 @@ public class InvalidListingLogger {
     private static final String CSV_FILE_NAME = "importLog.csv";
 
     public static void saveInvalidListingsToCSV(EntityList entityList) throws FileNotFoundException {
-        Set<String> csvLines = new HashSet<>();
+        System.out.println("Logging invalid listings into log/importLog.csv");
+        Set<String> csvLines = new LinkedHashSet<>();
         csvLines.add("ListingId;MarketplaceName;InvalidField");
         entityList.listingList.forEach((listing, v) -> {
             v.forEach((invalidFieldName,isValid) -> {

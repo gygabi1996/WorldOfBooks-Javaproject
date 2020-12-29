@@ -24,6 +24,7 @@ public class FtpHandler {
         // upload report.json to the FTP server
         FTPClient ftpClient = new FTPClient();
         try {
+            System.out.println("Connecting to FTP server");
             ftpClient.connect(properties.getProperty(FTP_SERVER), Integer.parseInt(properties.getProperty(FTP_PORT)));
             ftpClient.login(properties.getProperty(FTP_USERNAME), properties.getProperty(FTP_PASSWORD));
 
@@ -38,7 +39,7 @@ public class FtpHandler {
             boolean done = ftpClient.storeFile(firstRemoteFile, inputStream);
             inputStream.close();
             if (done) {
-                System.out.println("The report.JSON is uploaded successfully.");
+                System.out.println("File: report.JSON is uploaded successfully.");
             }
 
         } catch (IOException ex) {

@@ -12,6 +12,7 @@ import java.util.UUID;
 public class ListingStatusApiHandler {
 
     public static Set<ListingStatus> stringToListingStatusList(String jsonString){
+        System.out.println("Getting 'listingStatuses' from API");
         Set<ListingStatus> listingStatuses = new HashSet<>();
 
         JSONArray array = new JSONArray(jsonString);

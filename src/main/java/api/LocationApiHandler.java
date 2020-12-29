@@ -11,6 +11,7 @@ import java.util.UUID;
 public class LocationApiHandler {
 
     public static Set<Location> stringToLocationList(String jsonString){
+        System.out.println("Getting 'locations' from API");
         Set<Location> locations = new HashSet<>();
 
         JSONArray array = new JSONArray(jsonString);

@@ -11,9 +11,13 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class ListingApiHandler {
+    private static final Logger LOGGER = Logger.getLogger(ListingApiHandler.class.getName());
+
     public static Map<Listing, Map<String,Boolean>> stringToListingList(String jsonString, EntityList entityList) {
+        System.out.println("Getting 'listings' from API");
         Map<Listing, Map<String,Boolean>> listings = new HashMap<>();
 
         JSONArray array = new JSONArray(jsonString);
@@ -27,7 +31,7 @@ public class ListingApiHandler {
                 id = UUID.fromString(jsonO.getString("id"));
                 invalidFieldList.put("id",true);
             } else {
-                System.out.println("Missing \"id\" at Listing. Listing id: " + id);
+                //LOGGER.info("Missing \"id\" at Listing. Listing id: " + id);
                 invalidFieldList.put("id",false);
             }
 
@@ -37,7 +41,7 @@ public class ListingApiHandler {
                 title = jsonO.getString("title");
                 invalidFieldList.put("title",true);
             } else {
-                System.out.println("Missing \"title\" at Listing. Listing id: " + id);
+                //LOGGER.info("Missing \"title\" at Listing. Listing id: " + id);
                 invalidFieldList.put("title",false);
             }
 
@@ -47,7 +51,7 @@ public class ListingApiHandler {
                 description = jsonO.getString("description");
                 invalidFieldList.put("description",true);
             } else {
-                System.out.println("Missing \"description\" at Listing. Listing id: " + id);
+                //LOGGER.info("Missing \"description\" at Listing. Listing id: " + id);
                 invalidFieldList.put("description",false);
             }
 
@@ -59,13 +63,13 @@ public class ListingApiHandler {
                 Boolean isReferenceSuccess = validateLocationId(entityList, locationId);
                 if(!isReferenceSuccess){
                     invalidFieldList.put("location_id",false);
-                    System.out.println("Wrong reference on \"location_id\" at Listing. Listing id: " + id);
+                    //LOGGER.info("Wrong reference on \"location_id\" at Listing. Listing id: " + id);
                 } else {
                     invalidFieldList.put("location_id",true);
                 }
             } else {
                 invalidFieldList.put("location_id",false);
-                System.out.println("Missing \"location_id\" at Listing. Listing id: " + id);
+                //LOGGER.info("Missing \"location_id\" at Listing. Listing id: " + id);
             }
 
             // Listing's listing_price
@@ -74,15 +78,15 @@ public class ListingApiHandler {
                 listingPrice = jsonO.getNumber("listing_price");
                 Boolean isValid = true;
 
-                if(listingPrice.intValue() < 0){
-                    System.out.println("Number is less than 0, \"listing_price\" at Listing. Listing id: " + id);
+                if(listingPrice.intValue() <= 0){
+                    //LOGGER.info("Number is less than 0, \"listing_price\" at Listing. Listing id: " + id);
                     invalidFieldList.put("listing_price",false);
                     isValid = false;
                 }
 
                 Boolean isValidateSuccess = validateListingPrice(listingPrice);
                 if(!isValidateSuccess){
-                    System.out.println("Number have more or less than 2 decimal, \"listing_price\" at Listing. Listing id: " + id);
+                    //LOGGER.info("Number have more or less than 2 decimal, \"listing_price\" at Listing. Listing id: " + id);
                     invalidFieldList.put("listing_price",false);
                     isValid = false;
                 }
@@ -93,7 +97,7 @@ public class ListingApiHandler {
 
             } else {
                 invalidFieldList.put("listing_price",false);
-                System.out.println("Missing \"listing_price\" at Listing. Listing id: " + id);
+                //LOGGER.info("Missing \"listing_price\" at Listing. Listing id: " + id);
             }
 
             // Listing's currency
@@ -101,14 +105,14 @@ public class ListingApiHandler {
             if (!jsonO.isNull("currency")) {
                 currency = jsonO.getString("currency");
                 if (currency.length() != 3){
-                    System.out.println("String is longer or shorter than 3 character, \"currency\" at Listing. Listing id: " + id);
+                    //LOGGER.info("String is longer or shorter than 3 character, \"currency\" at Listing. Listing id: " + id);
                     invalidFieldList.put("currency",false);
                 } else {
                     invalidFieldList.put("currency",true);
                 }
             } else {
                 invalidFieldList.put("currency",false);
-                System.out.println("Missing \"currency\" at Listing. Listing id: " + id);
+                //LOGGER.info("Missing \"currency\" at Listing. Listing id: " + id);
             }
 
             // Listing's quantity
@@ -116,14 +120,14 @@ public class ListingApiHandler {
             if (!jsonO.isNull("quantity")) {
                 quantity = jsonO.getNumber("quantity");
                 if(quantity.intValue() < 0){
-                    System.out.println("Number is less than 0, \"quantity\" at Listing. Listing id: " + id);
+                    //LOGGER.info("Number is less than 0, \"quantity\" at Listing. Listing id: " + id);
                     invalidFieldList.put("quantity",false);
                 } else {
                     invalidFieldList.put("quantity",true);
                 }
             } else {
                 invalidFieldList.put("quantity",false);
-                System.out.println("Missing \"quantity\" at Listing. Listing id: " + id);
+                //LOGGER.info("Missing \"quantity\" at Listing. Listing id: " + id);
             }
 
             // Listing's listing_status
@@ -135,7 +139,7 @@ public class ListingApiHandler {
                 Boolean isReferenceSuccess = validateListingStatusId(entityList, listingStatusId);
                 if(!isReferenceSuccess){
                     invalidFieldList.put("listing_status",false);
-                    System.out.println("Wrong reference on \"listing_status\" at Listing. Listing id: " + id);
+                    //LOGGER.info("Wrong reference on \"listing_status\" at Listing. Listing id: " + id);
                 } else {
                     // if the reference is success, set the fields of the marketplace
                     for (ListingStatus listingStatusLocal: entityList.listingStatuseList) {
@@ -148,7 +152,7 @@ public class ListingApiHandler {
                 }
             } else {
                 invalidFieldList.put("listing_status",false);
-                System.out.println("Missing \"listing_status\" at Listing. Listing id: " + id);
+                //LOGGER.info("Missing \"listing_status\" at Listing. Listing id: " + id);
             }
 
             // Listing's marketplace
@@ -159,7 +163,7 @@ public class ListingApiHandler {
                 Boolean isReferenceSuccess = validateMarketplaceId(entityList, marketplaceId);
                 if(!isReferenceSuccess){
                     invalidFieldList.put("marketplace",false);
-                    System.out.println("Wrong reference on \"marketplace\" at Listing. Listing id: " + id);
+                    //LOGGER.info("Wrong reference on \"marketplace\" at Listing. Listing id: " + id);
                 } else {
                     // if the reference is success, set the fields of the marketplace
                     for (Marketplace marketplaceLocal: entityList.marketplaceList) {
@@ -172,7 +176,7 @@ public class ListingApiHandler {
                 }
             } else {
                 invalidFieldList.put("marketplace",false);
-                System.out.println("Missing \"marketplace\" at Listing. Listing id: " + id);
+                //LOGGER.info("Missing \"marketplace\" at Listing. Listing id: " + id);
             }
 
             // Listing's updateTime
@@ -182,7 +186,7 @@ public class ListingApiHandler {
                 uploadTime = validateUploadTime(uploadTime, uploadTimeString);
                 invalidFieldList.put("upload_time",true);
             } else {
-                System.out.println("Wrong or missing \"upload_time\" at Listing. Listing id: " + id);
+                //LOGGER.info("Wrong or missing \"upload_time\" at Listing. Listing id: " + id);
                 invalidFieldList.put("upload_time",false);
             }
 
@@ -194,12 +198,12 @@ public class ListingApiHandler {
                 EmailValidator emailValidator = EmailValidator.getInstance();
                 invalidFieldList.put("owner_email_address",true);
                 if(!emailValidator.isValid(ownerEmailAddress)){
-                    System.out.println("Wrong format, \"owner_email_address\"  at Listing. Listing id: " + id);
+                    //LOGGER.info("Wrong format, \"owner_email_address\"  at Listing. Listing id: " + id);
                     invalidFieldList.put("owner_email_address",false);
                 }
             } else {
                 invalidFieldList.put("owner_email_address",false);
-                System.out.println("Missing \"owner_email_address\" at Listing. Listing id: " + id);
+                //LOGGER.info("Missing \"owner_email_address\" at Listing. Listing id: " + id);
             }
 
             // Make a new listing

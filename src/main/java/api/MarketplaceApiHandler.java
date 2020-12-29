@@ -11,6 +11,7 @@ import java.util.Set;
 public class MarketplaceApiHandler {
 
     public static Set<Marketplace> stringToMarketplaceList(String jsonString){
+        System.out.println("Getting 'marketplaces' from API");
         Set<Marketplace> marketplaces = new HashSet<>();
 
         JSONArray array = new JSONArray(jsonString);
