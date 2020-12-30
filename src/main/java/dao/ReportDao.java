@@ -114,9 +114,9 @@ public class ReportDao {
         while(resultSet.next()){
             Map<String,Number> amazonMap = new HashMap<>();
 
-            amazonMap.put("listingPriceAvg",resultSet.getInt(1));
-            amazonMap.put("listingCount",resultSet.getDouble(2));
-            amazonMap.put("listingPriceSum",resultSet.getDouble(3));
+            amazonMap.put("listingCount",resultSet.getInt(1));
+            amazonMap.put("listingPriceSum",resultSet.getDouble(2));
+            amazonMap.put("listingPriceAvg",resultSet.getDouble(3));
 
             amazonList.put(resultSet.getString(4),amazonMap);
         }
