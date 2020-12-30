@@ -93,11 +93,11 @@ public class DbHandler {
         // Get datas from database
         System.out.println("Getting report datas from database");
         Integer totalListingCount = ReportDao.getTotalListingCount(connection);
-        Map<String,Integer> ebayMap = ReportDao.getEbayListings(connection);
-        Map<String,Integer> amazonMap = ReportDao.getAmazonListings(connection);
+        Map<String,Number> ebayMap = ReportDao.getEbayListings(connection);
+        Map<String,Number> amazonMap = ReportDao.getAmazonListings(connection);
         String bestLister = ReportDao.getBestLister(connection);
-        Map<String,Map<String,Integer>> ebayMonthlyEbay = ReportDao.getEbayListingsPerMonth(connection);
-        Map<String,Map<String,Integer>> amazonMonthlyEbay = ReportDao.getAmazonListingsPerMonth(connection);
+        Map<String,Map<String,Number>> ebayMonthlyEbay = ReportDao.getEbayListingsPerMonth(connection);
+        Map<String,Map<String,Number>> amazonMonthlyEbay = ReportDao.getAmazonListingsPerMonth(connection);
         Map<String,String> bestListerMonthly = ReportDao.getBestListerPerMonth(connection);
 
         // Close database connection

@@ -18,8 +18,8 @@ public class ReportDao {
         return resultSet.getInt(1);
     }
 
-    public static Map<String,Integer> getEbayListings(Connection connection) throws SQLException {
-        Map<String,Integer> ebayMap = new LinkedHashMap<>();
+    public static Map<String,Number> getEbayListings(Connection connection) throws SQLException {
+        Map<String,Number> ebayMap = new LinkedHashMap<>();
 
         String sql = "select COUNT(*), SUM(li.listing_price), AVG(li.listing_price)\n" +
                 "from listings li inner join marketplaces m\n" +
@@ -31,14 +31,14 @@ public class ReportDao {
 
         resultSet.next();
         ebayMap.put("listingCount",resultSet.getInt(1));
-        ebayMap.put("listingPriceSum",resultSet.getInt(2));
-        ebayMap.put("listingPriceAvg",resultSet.getInt(3));
+        ebayMap.put("listingPriceSum",resultSet.getDouble(2));
+        ebayMap.put("listingPriceAvg",resultSet.getDouble(3));
 
         return ebayMap;
     }
 
-    public static Map<String,Integer> getAmazonListings(Connection connection) throws SQLException {
-        Map<String,Integer> amazonMap = new LinkedHashMap<>();
+    public static Map<String,Number> getAmazonListings(Connection connection) throws SQLException {
+        Map<String,Number> amazonMap = new LinkedHashMap<>();
 
         String sql = "select COUNT(*), SUM(li.listing_price), AVG(li.listing_price)\n" +
                 "from listings li inner join marketplaces m\n" +
@@ -50,8 +50,8 @@ public class ReportDao {
 
         resultSet.next();
         amazonMap.put("listingCount",resultSet.getInt(1));
-        amazonMap.put("listingPriceSum",resultSet.getInt(2));
-        amazonMap.put("listingPriceAvg",resultSet.getInt(3));
+        amazonMap.put("listingPriceSum",resultSet.getDouble(2));
+        amazonMap.put("listingPriceAvg",resultSet.getDouble(3));
 
         return amazonMap;
     }
@@ -70,8 +70,8 @@ public class ReportDao {
         return resultSet.getString(1);
     }
 
-    public static Map<String,Map<String,Integer>> getEbayListingsPerMonth(Connection connection) throws SQLException {
-        Map<String,Map<String,Integer>> ebayList = new LinkedHashMap<>();
+    public static Map<String,Map<String,Number>> getEbayListingsPerMonth(Connection connection) throws SQLException {
+        Map<String,Map<String,Number>> ebayList = new LinkedHashMap<>();
 
         String sql = "SELECT COUNT(*), SUM(li.listing_price), AVG(li.listing_price),\n" +
                 "       CONCAT(CONCAT(YEAR(STR_TO_DATE(upload_time,'%m/%d/%Y')), '/'), MONTH(STR_TO_DATE(upload_time,'%m/%d/%Y'))) as date1\n" +
@@ -85,11 +85,11 @@ public class ReportDao {
         ResultSet resultSet = statement.executeQuery(sql);
 
         while(resultSet.next()){
-            Map<String,Integer> ebayMap = new LinkedHashMap<>();
+            Map<String,Number> ebayMap = new LinkedHashMap<>();
 
             ebayMap.put("listingCount",resultSet.getInt(1));
-            ebayMap.put("listingPriceSum",resultSet.getInt(2));
-            ebayMap.put("listingPriceAvg",resultSet.getInt(3));
+            ebayMap.put("listingPriceSum",resultSet.getDouble(2));
+            ebayMap.put("listingPriceAvg",resultSet.getDouble(3));
 
             ebayList.put(resultSet.getString(4),ebayMap);
         }
@@ -97,8 +97,8 @@ public class ReportDao {
         return ebayList;
     }
 
-    public static Map<String,Map<String,Integer>> getAmazonListingsPerMonth(Connection connection) throws SQLException {
-        Map<String,Map<String,Integer>> amazonList = new LinkedHashMap<>();
+    public static Map<String,Map<String,Number>> getAmazonListingsPerMonth(Connection connection) throws SQLException {
+        Map<String,Map<String,Number>> amazonList = new LinkedHashMap<>();
 
         String sql = "SELECT COUNT(*), SUM(li.listing_price), AVG(li.listing_price),\n" +
                 "       CONCAT(CONCAT(YEAR(STR_TO_DATE(upload_time,'%m/%d/%Y')), '/'), MONTH(STR_TO_DATE(upload_time,'%m/%d/%Y'))) as date1\n" +
@@ -112,11 +112,11 @@ public class ReportDao {
         ResultSet resultSet = statement.executeQuery(sql);
 
         while(resultSet.next()){
-            Map<String,Integer> amazonMap = new HashMap<>();
+            Map<String,Number> amazonMap = new HashMap<>();
 
             amazonMap.put("listingPriceAvg",resultSet.getInt(1));
-            amazonMap.put("listingCount",resultSet.getInt(2));
-            amazonMap.put("listingPriceSum",resultSet.getInt(3));
+            amazonMap.put("listingCount",resultSet.getDouble(2));
+            amazonMap.put("listingPriceSum",resultSet.getDouble(3));
 
             amazonList.put(resultSet.getString(4),amazonMap);
         }
