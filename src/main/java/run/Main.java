@@ -35,15 +35,15 @@ public class Main {
          * Get the ListingStatus JSON from API and save it into the local list
          */
         url = new URL("https://my.api.mockaroo.com/listingStatus?key=63304c70");
-        String ListingStatusString = MainApiHandler.apiGetRequest(url);
-        entityList.listingStatuseList = ListingStatusApiHandler.stringToListingStatusList(ListingStatusString);
+        String listingStatusString = MainApiHandler.apiGetRequest(url);
+        entityList.listingStatuseList = ListingStatusApiHandler.stringToListingStatusList(listingStatusString);
 
         /**
-         * Get the ListingStatus JSON from API and save it into the local list
+         * Get the Marketplace JSON from API and save it into the local list
          */
         url = new URL("https://my.api.mockaroo.com/marketplace?key=63304c70");
-        String MarketplaceString = MainApiHandler.apiGetRequest(url);
-        entityList.marketplaceList = MarketplaceApiHandler.stringToMarketplaceList(MarketplaceString);
+        String marketplaceString = MainApiHandler.apiGetRequest(url);
+        entityList.marketplaceList = MarketplaceApiHandler.stringToMarketplaceList(marketplaceString);
 
         /**
          * Get the Listing JSON from API and save it into the local list
